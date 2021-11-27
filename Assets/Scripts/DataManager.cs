@@ -9,7 +9,7 @@ public class DataManager : MonoBehaviour
 {
     public static DataManager Instance; //datan säilyttämiseen scenejen välillä.
     public string playerName; //muuttuja pelaajan nimen säilyttämiseen
-
+    public int hiScore = 0;
 
 
     //datan säilyttämiseen scenejen välillä.
@@ -39,7 +39,7 @@ public class DataManager : MonoBehaviour
     {
         
     }
-   /* [System.Serializable]
+   [System.Serializable]
     class SaveData
     {
         public string playerName;
@@ -50,7 +50,7 @@ public class DataManager : MonoBehaviour
     {
         SaveData data = new SaveData();
         data.playerName = playerName;
-        data.bestScore = bestScore;
+        data.bestScore = hiScore;
 
         string json = JsonUtility.ToJson(data);
 
@@ -66,7 +66,7 @@ public class DataManager : MonoBehaviour
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
             playerName = data.playerName;
-            bestScore = data.bestScore;
+            hiScore = data.bestScore;
         }
-    }*/
+    }
 }

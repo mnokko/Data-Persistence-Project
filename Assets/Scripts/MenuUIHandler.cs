@@ -21,7 +21,9 @@ public class MenuUIHandler : MonoBehaviour
         pname = playerNameField.text;
         Debug.Log(pname);
         Debug.Log("Instanssi:");
+        Debug.Log(DataManager.Instance.playerName);
         DataManager.Instance.playerName = pname;
+        Debug.Log(DataManager.Instance.playerName);
 
     }
 

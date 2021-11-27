@@ -21,13 +21,13 @@ public class MainManager : MonoBehaviour
     
     private bool m_GameOver = false;
 
-    public string playerName;
+    private string name;
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        name = DataManager.Instance.playerName;
 
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
@@ -84,14 +84,19 @@ public class MainManager : MonoBehaviour
 
     void ShowBestScore()
     {
-        BestScoreText.text = "Best Score: " + playerName + ": " + m_Points;
+        BestScoreText.text = "Best Score: " + name + ": " + m_Points;
     }
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        SaveHighScoreAndName();
     }
 
+    void SaveHighScoreAndName()
+    {
+        DataManager.Instance.SaveScore();
+    }
 
 }
