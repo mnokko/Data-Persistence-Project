@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,17 +9,27 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
+// Sets the script to be executed later than all default scripts
+[DefaultExecutionOrder(1000)]
 public class MenuUIHandler : MonoBehaviour
 {
     public InputField playerNameField;
     public string pname;
-    
+
+    public void NewNameEntered(string pname)
+    {
+        pname = playerNameField.text;
+        Debug.Log(pname);
+        Debug.Log("Instanssi:");
+        DataManager.Instance.playerName = pname;
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-       //playerNameField.onValueChanged.AddListener(NewNameEntered);
 
-
+        //NewNameEntered();
     }
 
     // Update is called once per frame
@@ -34,6 +45,8 @@ public class MenuUIHandler : MonoBehaviour
 
     public void Exit()
     {
+
+        //DataManager.Instance.SaveScore();
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
 #else
@@ -41,12 +54,4 @@ public class MenuUIHandler : MonoBehaviour
 #endif
     }
 
-    public void NewNameEntered(string pname)
-    {
-        pname = playerNameField.text;
-        Debug.Log(pname);
-        
-       //MainManager.Instance.playerName = pname;
-        //Debug.Log(MainManager.Instance.playerName);
-    }
 }

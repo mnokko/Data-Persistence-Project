@@ -21,8 +21,8 @@ public class MainManager : MonoBehaviour
     
     private bool m_GameOver = false;
 
-    public static MainManager Instance; //datan säilyttämiseen scenejen välillä.
-    public string playerName; //muuttuja pelaajan nimen säilyttämiseen
+    public string playerName;
+
 
     // Start is called before the first frame update
     void Start()
@@ -74,21 +74,7 @@ public class MainManager : MonoBehaviour
             ShowBestScore();
         }
     }
-    //datan säilyttämiseen scenejen välillä.
-    private void Awake()
-    {
-        //Only use single instance of Instance variable
-        if(Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
 
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-
-        LoadScore();
-    }
 
     void AddPoint(int point)
     {
@@ -107,34 +93,5 @@ public class MainManager : MonoBehaviour
         GameOverText.SetActive(true);
     }
 
-    [System.Serializable]
-    class SaveData
-    {
-        public string playerName;
-        public int bestScore;
-    }
 
-    public void SaveScore()
-    {
-        SaveData data = new SaveData();
-        data.playerName = playerName;
-        data.bestScore = bestScore;
-
-        string json = JsonUtility.ToJson(data);
-
-        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
-    }
-
-    public void LoadScore()
-    {
-        string path = Application.persistentDataPath + "/savefile.json";
-        if (File.Exists(path))
-        {
-            string json = File.ReadAllText(path);
-            SaveData data = JsonUtility.FromJson<SaveData>(json);
-
-            playerName = data.playerName;
-            bestScore = data.bestScore;
-        }
-    }
 }
