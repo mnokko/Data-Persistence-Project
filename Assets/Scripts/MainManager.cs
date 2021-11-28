@@ -16,18 +16,23 @@ public class MainManager : MonoBehaviour
     public Text BestScoreText;
     
     private bool m_Started = false;
-    private int m_Points;
-    public int bestScore = 0;
-    
+    private int m_Points; //Tämänhetkisen pelin pisteet.
+    private string currentName; //Tämänhetkisen pelaajan nimi.
+
     private bool m_GameOver = false;
 
-    private string name;
+    public string bestScorePlayer; // Muuttuja, johon haetaan parhaan tuloksen pelanneen nimi tiedostosta.
+    public int bestScore; // Muuttuja, johon haetaan paras tulos tiedostosta.
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-        name = DataManager.Instance.playerName;
+        
+        bestScore = DataManager.Instance.hiScore;
+        bestScorePlayer = DataManager.Instance.bestPlayer;
+        currentName = DataManager.Instance.playerName;
 
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
@@ -43,6 +48,8 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        ShowBestScore();
     }
 
     private void Update()
@@ -58,10 +65,13 @@ public class MainManager : MonoBehaviour
 
                 Ball.transform.SetParent(null);
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
+
+
             }
         }
         else if (m_GameOver)
         {
+           
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -71,7 +81,13 @@ public class MainManager : MonoBehaviour
         if (m_Points > bestScore)
         {
             bestScore = m_Points;
+            bestScorePlayer = currentName;
+
+            SaveHighScoreAndName();
             ShowBestScore();
+
+            bestScore = DataManager.Instance.hiScore;
+            bestScorePlayer = DataManager.Instance.bestPlayer;
         }
     }
 
@@ -84,19 +100,21 @@ public class MainManager : MonoBehaviour
 
     void ShowBestScore()
     {
-        BestScoreText.text = "Best Score: " + name + ": " + m_Points;
+        BestScoreText.text = "Best Score: " + bestScorePlayer + ": " + bestScore;
     }
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
-        SaveHighScoreAndName();
+        
     }
 
     void SaveHighScoreAndName()
     {
-        DataManager.Instance.SaveScore();
+        DataManager.Instance.SaveScore(bestScorePlayer, bestScore);
+        Debug.Log("paras tulos " + bestScore);
+        Debug.Log("pelaaja " + bestScorePlayer);
     }
 
 }

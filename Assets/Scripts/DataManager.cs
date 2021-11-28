@@ -8,8 +8,10 @@ using System.IO;
 public class DataManager : MonoBehaviour
 {
     public static DataManager Instance; //datan säilyttämiseen scenejen välillä.
-    public string playerName; //muuttuja pelaajan nimen säilyttämiseen
-    public int hiScore = 0;
+    public string playerName; //muuttuja nykyisen pelaajan nimen säilyttämiseen
+    public string bestPlayer; //muuttuja parhaan pelaajan nimen säilyttämiseen
+    public int hiScore;
+
 
 
     //datan säilyttämiseen scenejen välillä.
@@ -25,7 +27,7 @@ public class DataManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        //LoadScore();
+        LoadScore();
     }
 
     // Start is called before the first frame update
@@ -46,7 +48,7 @@ public class DataManager : MonoBehaviour
         public int bestScore;
     }
 
-    public void SaveScore()
+    public void SaveScore(string playerName, int hiScore)
     {
         SaveData data = new SaveData();
         data.playerName = playerName;
@@ -65,7 +67,7 @@ public class DataManager : MonoBehaviour
             string json = File.ReadAllText(path);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
-            playerName = data.playerName;
+            bestPlayer = data.playerName;
             hiScore = data.bestScore;
         }
     }
