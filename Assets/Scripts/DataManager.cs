@@ -17,6 +17,7 @@ public class DataManager : MonoBehaviour
     //datan säilyttämiseen scenejen välillä.
     private void Awake()
     {
+ 
         //Only use single instance of Instance variable
         if (Instance != null)
         {
@@ -26,28 +27,17 @@ public class DataManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        LoadScore();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   //Luokka tallennettavalle tiedolle
    [System.Serializable]
     class SaveData
     {
         public string playerName;
         public int bestScore;
     }
-
+    //Tietojen tallennus tiedostoon, kun uusi hiscore syntyy.
     public void SaveScore(string playerName, int hiScore)
     {
         SaveData data = new SaveData();
@@ -58,7 +48,7 @@ public class DataManager : MonoBehaviour
 
         File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
     }
-
+    //Tietojen lataus tiedostosta.
     public void LoadScore()
     {
         string path = Application.persistentDataPath + "/savefile.json";

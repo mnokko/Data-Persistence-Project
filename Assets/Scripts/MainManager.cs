@@ -29,10 +29,16 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //Ladataan hiscore ja parhaan pelaajan nimi tiedostosta.
+        DataManager.Instance.LoadScore();
+
+        //Haetaan hiscore ja parhaan pelaajan nimi muuttujiin.
         bestScore = DataManager.Instance.hiScore;
         bestScorePlayer = DataManager.Instance.bestPlayer;
+
+        //Haetaan nykyisen pelaajan nimi muuttujaan.
         currentName = DataManager.Instance.playerName;
+        //Debug.Log("Bestscore-kohta: " + bestScorePlayer + " " + bestScore);
 
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
@@ -56,8 +62,10 @@ public class MainManager : MonoBehaviour
     {
         if (!m_Started)
         {
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
+
                 m_Started = true;
                 float randomDirection = Random.Range(-1.0f, 1.0f);
                 Vector3 forceDir = new Vector3(randomDirection, 1, 0);
@@ -65,39 +73,38 @@ public class MainManager : MonoBehaviour
 
                 Ball.transform.SetParent(null);
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
-
-
             }
         }
         else if (m_GameOver)
         {
-           
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
+
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
             }
         }
 
+        //Jos nykyisen pelaajan pistem‰‰r‰ on suurempi kuin hiscore, tallennetaan uusi hiscore ja pelaajan nimi.
         if (m_Points > bestScore)
         {
             bestScore = m_Points;
             bestScorePlayer = currentName;
 
             SaveHighScoreAndName();
-            ShowBestScore();
 
-            bestScore = DataManager.Instance.hiScore;
-            bestScorePlayer = DataManager.Instance.bestPlayer;
+            ShowBestScore();
         }
     }
 
-
+    //Pistelasku
     void AddPoint(int point)
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
     }
-
+    //N‰ytet‰‰n hiscore ruudun yl‰laidassa.
     void ShowBestScore()
     {
         BestScoreText.text = "Best Score: " + bestScorePlayer + ": " + bestScore;
@@ -110,6 +117,7 @@ public class MainManager : MonoBehaviour
         
     }
 
+    //Tallennetaan uusi hiscore ja pelaajan nimi tiedostoon.
     void SaveHighScoreAndName()
     {
         DataManager.Instance.SaveScore(bestScorePlayer, bestScore);

@@ -19,27 +19,14 @@ public class MenuUIHandler : MonoBehaviour
     public void NewNameEntered(string pname)
     {
         pname = playerNameField.text;
-        Debug.Log(pname);
-        Debug.Log("Instanssi:");
-        Debug.Log(DataManager.Instance.playerName);
+        //Debug.Log(pname);
+        //Debug.Log("Instanssi:");
+        //Debug.Log(DataManager.Instance.playerName);
         DataManager.Instance.playerName = pname;
-        Debug.Log(DataManager.Instance.playerName);
+        //Debug.Log(DataManager.Instance.playerName);
 
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-        //NewNameEntered();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-     
-    }
-
+    //Pelin aloittaminen.
     public void StartNew()
     {
         SceneManager.LoadScene(1);
